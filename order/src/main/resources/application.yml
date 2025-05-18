@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: order	
+  datasource:
+    url: jdbc:mysql://localhost:3306/peerislands
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /api-docs
+  packages-to-scan:
+  - com.order.controller
+logging:
+  level:
+    org.springdoc: DEBUG
+    org.springframework.web: DEBUG
+
+

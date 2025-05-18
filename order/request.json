@@ -1,0 +1,9 @@
+
+//order request
+{
+   "items":[
+      {"item":{"itemId":140}, "quantity":20},
+      {"item":{"itemId":122}, "quantity":2},
+      {"item":{"itemId":127}, "quantity":30}
+   ]
+}
