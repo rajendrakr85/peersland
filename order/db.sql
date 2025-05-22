@@ -6,6 +6,11 @@ CREATE TABLE orders (order_id INT PRIMARY KEY AUTO_INCREMENT,order_status VARCHA
 CREATE TABLE order_item (id INT PRIMARY KEY AUTO_INCREMENT,order_id INT,item_id INT,quantity INT,
 FOREIGN KEY (order_id) REFERENCES orders(order_id), FOREIGN KEY (item_id) REFERENCES item(item_id)); 
 
+alter table orders add column total double;
+alter table orders add column payment_mode varchar(20);
+alter table orders add column amount_paid double;
+
+
 INSERT INTO Item (item_id, item_name, price, description) VALUES
 (101, 'Wireless Bluetooth Headphones', 89.99, 'Noise-cancelling over-ear headphones with 20-hour battery life.'),
 (102, 'Stainless Steel Chef Knife', 34.95, '8-inch professional chef knife with ergonomic handle.'),

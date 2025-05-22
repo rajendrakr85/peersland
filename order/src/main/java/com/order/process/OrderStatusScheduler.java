@@ -22,8 +22,13 @@ public class OrderStatusScheduler {
     @Scheduled(fixedRate = 100000) // every 5 minutes
     public void updatePendingOrders() {
         List<Order> pendingOrders = orderRepo.findByOrderStatus("PENDING");
+        
         for (Order order : pendingOrders) {
-            order.setOrderStatus("PROCESSING");
+        	if(order.getPaymentMode().equals("Credit") && order.getAmountPaid()>=order.getTotal()) {
+        		order.setOrderStatus("PROCESSING");
+        	}else {
+        		order.setOrderStatus("PROCESSING");
+        	}
             order.setModifiedTime(LocalDateTime.now());
         }
         orderRepo.saveAll(pendingOrders);

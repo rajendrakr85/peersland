@@ -5,8 +5,10 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -38,6 +40,17 @@ public class OrderController {
 	@GetMapping("/{orderId}")
 	public ResponseEntity<Order> getOrders(@PathVariable Integer orderId) {
 		Optional<Order> order=orderService.getOrder(orderId);
+		if(!order.isEmpty()) {
+			return new ResponseEntity<Order>(order.get(),HttpStatus.OK);
+		}else {
+			return new ResponseEntity<Order>(HttpStatus.BAD_REQUEST);
+		}
+		
+	}
+	
+	@PatchMapping("/{orderId}/{amount}")
+	public ResponseEntity<Order> getPartialPayment(@PathVariable Integer orderId,@PathVariable Double amount) {
+		Optional<Order> order=orderService.paidPayment(orderId, amount);
 		if(!order.isEmpty()) {
 			return new ResponseEntity<Order>(order.get(),HttpStatus.OK);
 		}else {

@@ -32,6 +32,15 @@ public class Order {
 	private String orderStatus;
 	
 	@Column
+	private Double amountPaid;
+	
+	@Column
+	private Double total;
+	
+	@Column
+	private String paymentMode;
+	
+	@Column
 	private LocalDateTime createdTime;
 	
 	@Column

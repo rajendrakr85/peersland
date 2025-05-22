@@ -24,6 +24,16 @@ public class OrderService {
 		return orderRepository.findByOrderStatus(status);
 	}
 	
+	public Optional<Order> paidPayment(Integer orderid, Double amount) {
+		Optional<Order>paymentOrder= orderRepository.findByOrderId(orderid);
+		if(paymentOrder.isPresent()) {
+			Double currentAmount=paymentOrder.get().getAmountPaid()+amount;
+			paymentOrder.get().setAmountPaid(currentAmount);
+		}
+		this.saveOrder(paymentOrder.get());
+		return paymentOrder;
+	}
+	
 	public Optional<Order> getOrder(Integer orderid) {
 		return orderRepository.findByOrderId(orderid);
 	}
@@ -34,11 +44,12 @@ public class OrderService {
 		}
 		order.setCreatedTime(LocalDateTime.now()); // set current time
         order.setOrderStatus("PENDING");         // set initial status
-        
+        Double total=0.0;
         for (OrderItem item : order.getItems()) {
             item.setOrder(order); // 👈 Set the back-reference
+            total=total+item.getItem().getPrice();
         }
-        
+        order.setTotal(total);
         return orderRepository.save(order);
 	}
 	
