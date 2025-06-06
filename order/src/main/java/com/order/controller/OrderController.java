@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.order.dto.OrderDTO;
 import com.order.model.Order;
 import com.order.service.OrderService;
 
@@ -29,12 +29,12 @@ public class OrderController {
 	private OrderService orderService;
 
 	@GetMapping("/")
-	public ResponseEntity<List<Order>> getAllOrders(@RequestParam(defaultValue = "PENDING") String orderStatus) {
-		List<Order>orders=orderService.findOrderByStatus(orderStatus);
+	public ResponseEntity<List<OrderDTO>> getAllOrders(@RequestParam(defaultValue = "PENDING") String orderStatus) {
+		List<OrderDTO>orders=orderService.findOrderByStatus(orderStatus);
 		if(orders.size()>0) {
-			return new ResponseEntity<List<Order>>(orders,HttpStatus.OK);
+			return new ResponseEntity<List<OrderDTO>>(orders,HttpStatus.OK);
 		}{
-			return new ResponseEntity<List<Order>>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<List<OrderDTO>>(HttpStatus.ACCEPTED);
 		}
 	}
 	@GetMapping("/{orderId}")
@@ -85,8 +85,5 @@ public class OrderController {
 		return orderService.cancelOrder(orderId) ;
 		
 	}
-	
-	
-	
 	
 }

@@ -3,10 +3,13 @@ package com.order.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.order.dto.OrderDTO;
 import com.order.exception.ResourceNotFoundException;
 import com.order.model.Order;
 import com.order.model.OrderItem;
@@ -20,8 +23,9 @@ public class OrderService {
 	@Autowired
 	private OrderRepository orderRepository;
 	
-	public List<Order> findOrderByStatus(String status) {
-		return orderRepository.findByOrderStatus(status);
+	public List<OrderDTO> findOrderByStatus(String status) {
+		List<OrderDTO> listOrder=this.toDTO(orderRepository.findByOrderStatus(status));
+		return listOrder;
 	}
 	
 	public Optional<Order> paidPayment(Integer orderid, Double amount) {
@@ -75,4 +79,10 @@ public class OrderService {
 		}
 	}
 	
+	private List<OrderDTO> toDTO(List<Order> orders ){
+		return orders.stream().map(order->{
+			return new OrderDTO(order.getOrderId(),order.getItems(),order.getOrderStatus(),order.getAmountPaid(),
+					order.getTotal(),order.getPaymentMode(),order.getCreatedTime(),order.getModifiedTime());
+		}).collect(Collectors.toList());
+	}
 }
